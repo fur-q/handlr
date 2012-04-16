@@ -1,0 +1,48 @@
+0.4 (2012/04/16)
+
+++ Totally rewritten in wxLua.
+++ Settings dialog added.
+++ Configurable options added.
+~~ URL parsing improved.
+-- 32*32 icon removed (see below).
+-- Dialogs no longer show a taskbar icon.
+-- Removed winapi and clipboard libraries.
+
+----
+
+0.3 (2012/03/26)
+
+++ Notification shown when the clipboard contains no URLs.
+++ 32*32 icon added.
+~~ New build procedure; executable size reduced.
+~~ Code cleanup.
+~~ URL parsing improved.
+-- Statically linked winapi and clipboard libs.
+
+----
+
+0.2.1 (2012/03/16)
+
+~~ Fixed a bug which caused handlr to not exit cleanly.
+~~ Minor bugfixes.
+-- Executable size reduced.
+
+----
+
+0.2 (2012/03/10)
+
+++ Firefox/Chrome's HTML clipboard format is now parsed.
+++ Visual Styles are now used under Windows.
+~~ cmd.exe window no longer appears when opening URLs.
+
+----
+
+0.1.1 (2012/01/20)
+
+~~ Minor bugfixes.
+
+----
+
+0.1 (2012/01/19)
+
+++ Initial release.
