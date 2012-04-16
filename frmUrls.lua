@@ -27,10 +27,11 @@ function frmUrls:Init()
     "Select links to open...",
     wx.wxDefaultPosition,
     wx.wxSize( 360,300 ),
-    wx.wxCAPTION + wx.wxCLOSE_BOX + wx.wxFRAME_NO_TASKBAR + wx.wxRESIZEBORDER + wx.wxSYSTEM_MENU + wx.wxTAB_TRAVERSAL
+    wx.wxCAPTION + wx.wxCLOSE_BOX + wx.wxFRAME_NO_TASKBAR + wx.wxRESIZE_BORDER + wx.wxSYSTEM_MENU + wx.wxTAB_TRAVERSAL
   )
   local lframe = self.frame
   lframe:SetSizeHints( wx.wxDefaultSize, wx.wxDefaultSize )
+  lframe:SetIcon(wx.wxIcon("HANDLR_ICON", wx.wxBITMAP_TYPE_ICO_RESOURCE))
   
   self.vszUrls = wx.wxBoxSizer( wx.wxVERTICAL )
   
@@ -102,8 +103,6 @@ function frmUrls:BuildSearch()
       table.insert(self.search_html, v.."=[\"']?("..w..")") 
     end
   end
-  for k,v in pairs(self.search) do print(k,v) end
-  for k,v in pairs(self.search_html) do print(k,v) end
 end
 
 -- extract URLs from contents of text/HTML on the clipboard

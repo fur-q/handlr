@@ -29,13 +29,11 @@ end
 
 --
 
-package.path = package.path..";D:/mirror/dev/handlr/?.lua"  -- deleteme
-
 require("wx")
 local frmUrls     = require("frmUrls")
 local frmSettings = require("frmSettings")
 local pp          = require("pl.pretty")
-local PORTABLE    = true
+local NO_PORTABLE = false  -- do this with getenv
 
 -- config
 
@@ -49,18 +47,22 @@ cfg = {
 }
 
 setmetatable(cfg, {__index = {
-  file = nil,
+
+  file = "",
+
   dir = function()
-    return PORTABLE and 
-    wx.wxStandardPaths.Get():GetLocalDataDir() or
-    wx.wxStandardPaths.Get():GetUserDataDir()
+    return NO_PORTABLE and 
+    wx.wxStandardPaths.Get():GetUserDataDir() or
+    wx.wxStandardPaths.Get():GetLocalDataDir()
   end,
+
   update = function(self,tbl)
     for k,v in pairs(tbl) do self[k] = v end
   end,
+
   load = function(self, file)
     if not file then file = self.dir() .. "/handlr.cfg" end
-    self.file = file
+    getmetatable(self).__index.file = file
     local cnf = io.open(file, "r")
     if not cnf then return end
     local str = cnf:read("*all")
@@ -69,11 +71,13 @@ setmetatable(cfg, {__index = {
     if not tbl then return end
     self:update(tbl)
   end,
+
   save = function(self, file)
     if not file then file = self.file end
     pp.dump(self, file)
     frmUrls:BuildSearch()
   end
+
 }})
 
 -- tray icon
@@ -100,7 +104,7 @@ function trayicon:init()
     function(e) 
       frmUrls:GetUrls()
       if #frmUrls.urls == 0 then
-        -- show balloon notification
+        -- show notification
         return
       end
       if cfg.auto_urls and #frmUrls.urls <= cfg.auto_urls then

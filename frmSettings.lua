@@ -16,10 +16,11 @@ function frmSettings:Init()
     "Settings",
     wx.wxDefaultPosition,
     wx.wxSize( -1,-1 ),
-    wx.wxCAPTION + wx.wxCLOSE_BOX + wx.wxFRAME_NO_TASKBAR + wx.wxRESIZEBORDER + wx.wxSYSTEM_MENU + wx.wxTAB_TRAVERSAL
+    wx.wxCAPTION + wx.wxCLOSE_BOX + wx.wxFRAME_NO_TASKBAR + wx.wxRESIZE_BORDER + wx.wxSYSTEM_MENU + wx.wxTAB_TRAVERSAL
   )
   local lframe = self.frame
   lframe:SetSizeHints( wx.wxDefaultSize, wx.wxDefaultSize )
+  lframe:SetIcon(wx.wxIcon("HANDLR_ICON", wx.wxBITMAP_TYPE_ICO_RESOURCE))
   
   self.vszSettings = wx.wxBoxSizer( wx.wxVERTICAL )
   

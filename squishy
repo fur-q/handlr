@@ -1,0 +1,7 @@
+Main "main.lua"
+Output "build/build-handlr.lua"
+Module "frmSettings"
+Module "frmUrls"
+Module "pl.utils"
+Module "pl.lexer"
+Module "pl.pretty"
