@@ -27,7 +27,7 @@ function frmUrls:Init()
     "Select links to open...",
     wx.wxDefaultPosition,
     wx.wxSize( 360,300 ),
-    wx.wxCAPTION + wx.wxCLOSE_BOX + wx.wxSYSTEM_MENU + wx.wxTAB_TRAVERSAL
+    wx.wxCAPTION + wx.wxCLOSE_BOX + wx.wxFRAME_NO_TASKBAR + wx.wxRESIZEBORDER + wx.wxSYSTEM_MENU + wx.wxTAB_TRAVERSAL
   )
   local lframe = self.frame
   lframe:SetSizeHints( wx.wxDefaultSize, wx.wxDefaultSize )

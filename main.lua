@@ -80,7 +80,7 @@ setmetatable(cfg, {__index = {
 
 local trayicon = wx.wxTaskBarIcon()
 function trayicon:init()
-  self:SetIcon(wx.wxIcon("HANDLR", wx.wxBITMAP_TYPE_ICO_RESOURCE), "handlr")
+  self:SetIcon(wx.wxIcon("HANDLR_ICON", wx.wxBITMAP_TYPE_ICO_RESOURCE), "handlr")
 
   self.menu = wx.wxMenu()
   self.menu_opts  = wx.wxMenuItem(self.menu, wx.wxID_ANY, "Settings")
