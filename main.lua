@@ -28,7 +28,7 @@ function string.split(str, dlm)
 end
 
 function string.insens(str)
-  return str.gsub(str, "%w", function(c)
+  return str.gsub(str, "%a", function(c)
     return(string.format("[%s%s]", c:lower(), c:upper()))
   end)
 end

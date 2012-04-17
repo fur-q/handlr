@@ -93,10 +93,10 @@ end
 function frmUrls:BuildSearch()
   self.search, self.search_html = {}, {}
   for _,v in pairs(cfg.prefixes) do 
-    table.insert(self.search, string.insens(v).."://[^%s\"']+")
+    table.insert(self.search, string.insens(v).."://[^%s/$.?#]+%.[^%s\"']+")
   end
   for _,v in pairs(cfg.subdomains) do 
-    table.insert(self.search, string.insens(v)..".[^%s\"']+") 
+    table.insert(self.search, string.insens(v).."%.[^%s\"']+") 
   end
   for _,v in pairs(cfg.attrs) do 
     for _,w in pairs(self.search) do

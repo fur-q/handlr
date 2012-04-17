@@ -62,7 +62,7 @@ function frmSettings:Init()
     
   self.vszSettings:Add( self.sbsOpen, 0,  bit.bor(wx.wxALL,wx.wxEXPAND), 5 )
   
-  self.sbsSearch = wx.wxStaticBoxSizer( wx.wxStaticBox( lframe, wx.wxID_ANY, "Searching for URLs" ), wx.wxVERTICAL )
+  self.sbsSearch = wx.wxStaticBoxSizer( wx.wxStaticBox( lframe, wx.wxID_ANY, "Searching for urls" ), wx.wxVERTICAL )
   
   self.fgsSearch = wx.wxFlexGridSizer( 0, 2, 0, 0 )
   self.fgsSearch:SetFlexibleDirection( wx.wxBOTH )
