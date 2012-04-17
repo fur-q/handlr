@@ -1,5 +1,4 @@
 # handlr
-0.4 (2012/04/16)
 [http://b23.be/handlr](http://b23.be/handlr)
 
 ## features
