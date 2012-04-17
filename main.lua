@@ -23,7 +23,7 @@ end
 
 function string.split(str, dlm)
   new = {}
-  for str in str:gmatch("[^"..dlm.."]+") do table.insert(new,str) end
+  for s in str:gmatch("[^"..dlm.."]+") do table.insert(new,s) end
   return new
 end
 
