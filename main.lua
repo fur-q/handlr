@@ -1,6 +1,6 @@
--- handlr 0.4.0 (20120416)
+-- handlr 0.4 (2012/04/16)
 -- http://b23.be/handlr
--- strawman at b23 dot be
+-- by strawman at b23 dot be
 
 -- TODO:
 -- ~~ use wxConfig instead of pl.pretty?
