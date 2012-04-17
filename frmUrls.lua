@@ -68,7 +68,7 @@ function frmUrls:Init()
     function(e)
       local _, sel = self.lstUrls:GetSelections()
       local urls = {}
-      for _,k in pairs(sel) do table.insert(urls, self.urls[k]) end
+      for _,k in pairs(sel) do table.insert(urls, self.urls[k+1]) end
       self:OpenUrls(urls)
       self:Close()
     end
@@ -93,14 +93,14 @@ end
 function frmUrls:BuildSearch()
   self.search, self.search_html = {}, {}
   for _,v in pairs(cfg.prefixes) do 
-    table.insert(self.search, v.."://[^%s\"']+") 
+    table.insert(self.search, string.insens(v).."://[^%s\"']+")
   end
   for _,v in pairs(cfg.subdomains) do 
-    table.insert(self.search, v..".[^%s\"']+") 
+    table.insert(self.search, string.insens(v)..".[^%s\"']+") 
   end
   for _,v in pairs(cfg.attrs) do 
     for _,w in pairs(self.search) do
-      table.insert(self.search_html, v.."=[\"']?("..w..")") 
+      table.insert(self.search_html, string.insens(v).."=[\"']?("..w..")")
     end
   end
 end
@@ -122,17 +122,19 @@ function frmUrls:GetUrls()
   end
   for k,v in pairs(self.urls) do
     -- convert URLs to lowercase
-    if cfg.lower == 1 then
+    if cfg.convert == 1 then
       if not v:match("[a-z]") then self.urls[k] = v:lower() end
-    elseif cfg.lower == 2 then
+    elseif cfg.convert == 2 then
       local u = string.split(v, "/")
-      for i = 1,#u-1 do u[i] = u[i]:lower() end
-      self.urls[k] = table.concat(u, "/")
-    elseif cfg.lower == 3 then
+      if #u > 2 then
+        for i = 1,#u-1 do u[i] = u[i]:lower() end
+        self.urls[k] = table.concat(u, "/")
+      end
+    elseif cfg.convert == 3 then
       self.urls[k] = v:lower()
     end
     -- prepend http:// to URLs with no prefix for better dupe removal
-    if not v:match("://") then self.urls[k] = "http://"..v end
+    if not v:match("://") then self.urls[k] = "http://"..self.urls[k] end
   end
   -- remove duplicates
   self.urls = table.uniq(self.urls)

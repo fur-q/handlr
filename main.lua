@@ -21,10 +21,16 @@ function table.uniq(tbl)
   return new
 end
 
-function string.split(str)
+function string.split(str, dlm)
   new = {}
-  for str in str:gmatch("%w+") do table.insert(new,str) end
+  for str in str:gmatch("[^"..dlm.."]+") do table.insert(new,str) end
   return new
+end
+
+function string.insens(str)
+  return str.gsub(str, "%w", function(c)
+    return(string.format("[%s%s]", c:lower(), c:upper()))
+  end)
 end
 
 --
