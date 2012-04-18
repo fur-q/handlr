@@ -89,7 +89,7 @@ function frmSettings:Init()
   self.txtAttrs = wx.wxTextCtrl( lframe, wx.wxID_ANY, "", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
   self.fgsSearch:Add( self.txtAttrs, 0,  bit.bor(wx.wxALL,wx.wxEXPAND), 5 )
   
-  self.lblLowercase = wx.wxStaticText( lframe, wx.wxID_ANY, "Convert links to lowercase:", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
+  self.lblLowercase = wx.wxStaticText( lframe, wx.wxID_ANY, "Convert URLs to lowercase:", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
   self.lblLowercase:Wrap( -1 )
   self.fgsSearch:Add( self.lblLowercase, 0,  bit.bor(wx.wxALIGN_CENTER_VERTICAL,wx.wxALL), 5 )
   

@@ -90,15 +90,20 @@ setmetatable(cfg, {__index = {
 
 local trayicon = wx.wxTaskBarIcon()
 function trayicon:init()
+  -- vv make this platform independent vv
   self:SetIcon(wx.wxIcon("HANDLR_ICON", wx.wxBITMAP_TYPE_ICO_RESOURCE), "handlr")
 
   self.menu = wx.wxMenu()
   self.menu_opts  = wx.wxMenuItem(self.menu, wx.wxID_ANY, "Settings")
   self.menu_about = wx.wxMenuItem(self.menu, wx.wxID_ANY, "About")
-  self.menu_quit  = wx.wxMenuItem(self.menu, wx.wxID_ANY, "Quit")
+  self.menu_quit  = wx.wxMenuItem(self.menu, wx.wxID_ANY, "Exit")
   self.menu:Append(self.menu_opts)
+  self.menu:AppendSeparator()
   self.menu:Append(self.menu_about)
   self.menu:Append(self.menu_quit)
+
+  self.none = wx.wxMenu()
+  self.none:Append(wx.wxMenuItem(self.none, wx.wxID_ANY, "No URLs on clipboard."))
 
   self:Connect(wx.wxEVT_TASKBAR_RIGHT_DOWN, 
     function(e)
@@ -110,7 +115,7 @@ function trayicon:init()
     function(e) 
       frmUrls:GetUrls()
       if #frmUrls.urls == 0 then
-        -- show notification
+        self.PopupMenu(self, self.none)
         return
       end
       if cfg.auto_urls and #frmUrls.urls <= cfg.auto_urls then
