@@ -1,4 +1,4 @@
--- handlr 0.4 (2012/04/16)
+-- handlr 0.5 (2012/05/03)
 -- http://b23.be/handlr
 -- by strawman at b23 dot be
 
