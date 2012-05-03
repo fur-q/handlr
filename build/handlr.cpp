@@ -16,6 +16,7 @@
 #include "wx/image.h"
 #include "wx/file.h"
 #include "wx/filename.h"
+#include "wx/stdpaths.h"
 #include "wxlua/include/wxlua.h"
 #include "wxlua/include/wxlstate.h"
 
@@ -26,7 +27,8 @@ class HandlrApp : public wxApp {
 public:
     bool OnInit();
     int  OnExit();
-    void OnLua(wxLuaEvent &event);
+    void OnLuaPrint(wxLuaEvent &event);
+    void OnLuaError(wxLuaEvent &event);
     void OutputPrint(const wxString& str);
     wxLuaState m_wxlState;
 
@@ -39,15 +41,34 @@ DECLARE_APP(HandlrApp)
 IMPLEMENT_APP(HandlrApp)
 
 BEGIN_EVENT_TABLE(HandlrApp, wxApp)
-    EVT_LUA_PRINT       (wxID_ANY, HandlrApp::OnLua)
-    EVT_LUA_ERROR       (wxID_ANY, HandlrApp::OnLua)
+    EVT_LUA_PRINT       (wxID_ANY, HandlrApp::OnLuaPrint)
+    EVT_LUA_ERROR       (wxID_ANY, HandlrApp::OnLuaError)
 END_EVENT_TABLE()
 
 bool HandlrApp::OnInit() {
 #ifdef __WXGTK__
     setlocale(LC_NUMERIC, "C");
 #endif
+
+    // logger
+
+    char * h_debug;
+    char * h_portable;
+    wxString logDir;
+
+    if (h_debug != NULL) {
+        if (h_portable != NULL)
+            logDir = wxStandardPaths::Get().GetLocalDataDir();
+        else
+            logDir = wxStandardPaths::Get().GetUserDataDir();
+        wxString logPath = logDir + wxFileName::GetPathSeparator() + _T("handlr.log");
+        FILE* logFile = fopen (logPath.mb_str(), "a");
+        wxLogStderr* logger = new wxLogStderr (logFile);
+        wxLog::SetActiveTarget (logger);
+    }
+
     wxInitAllImageHandlers();
+
     WXLUA_IMPLEMENT_BIND_STD
 
     wxLuaState::sm_wxAppMainLoop_will_run = true;
@@ -57,7 +78,6 @@ bool HandlrApp::OnInit() {
         return false;
 
 #include "handlr.h"
-//    m_wxlState.RunBuffer((const char*)B1,sizeof(B1),wxT("handlr.lua"));
 
     wxWindowList::compatibility_iterator node = wxTopLevelWindows.GetFirst();
     if (node)
@@ -73,14 +93,15 @@ int HandlrApp::OnExit() {
     return wxApp::OnExit();
 }
 
-void HandlrApp::OnLua(wxLuaEvent &event) {
+void HandlrApp::OnLuaPrint(wxLuaEvent &event) {
+    wxLogMessage(event.GetString());
+}
+
+void HandlrApp::OnLuaError(wxLuaEvent &event) {
     OutputPrint(event.GetString());
 }
 
 void HandlrApp::OutputPrint(const wxString& str) {
-#ifdef __WXMSW__
-    wxMessageBox(str);
-#else
-    wxPrintf(wxT("%s\n"), str.c_str());
-#endif
+    wxMessageBox(_T("An error occurred - see handlr.log for details."), _T("Error"), wxOK | wxICON_ERROR);
+    wxLogMessage(str);
 }

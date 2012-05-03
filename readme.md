@@ -7,12 +7,11 @@ handlr is a tool for batch opening URLs.  It sits in your systray and finds any 
 
 Firefox and Chrome users can also copy a segment of a webpage, and handlr will find any URLs contained within the HTML.  Any other application (such as Thunderbird) which uses the same HTML clipboard format will work equally well.
 
-handlr is written in [wxLua](http://wxlua.sourceforge.net).  A Windows build is available in the Downloads section.
+handlr is written in Lua, using wxWidgets via [wxLua](http://wxlua.sourceforge.net).  A Windows build is available in the Downloads section.
 
 ## What it doesn't do (yet)
 
-- No Unicode support (appears to be a wxLua issue, working on it)
-- No Linux build (should build fine, but HTML clipboard support probably won't work)
+- No Linux build (coming soon)
 - No website (coming soon)
-- No cross-platform build system (coming soon)
+- No proper build system
 - No automated tests

@@ -1,6 +1,14 @@
+0.5 (2012/05/03)
+
+++ UTF-8 support fixed (with thanks to John Labenski)
+++ Lua errors now output to a logfile, rather than a message box.
+~~ Changed portable/nonportable check to use environment variables.
+
+----
+
 0.4 (2012/04/16)
 
-++ Totally rewritten in wxLua.
+++ Totally rewritten with wxLua.
 ++ Settings dialog added.
 ++ Configurable options added.
 ~~ URL parsing improved.
