@@ -39,7 +39,6 @@ require("wx")
 local frmUrls     = require("frmUrls")
 local frmSettings = require("frmSettings")
 local pp          = require("pl.pretty")
-local NO_PORTABLE = false  -- do this with getenv
 
 -- config
 
@@ -57,7 +56,7 @@ setmetatable(cfg, {__index = {
   file = "",
 
   dir = function()
-    return NO_PORTABLE and 
+    return os.getenv("H_PORTABLE") and 
     wx.wxStandardPaths.Get():GetUserDataDir() or
     wx.wxStandardPaths.Get():GetLocalDataDir()
   end,
