@@ -56,9 +56,7 @@ setmetatable(cfg, {__index = {
   file = "",
 
   dir = function()
-    return os.getenv("H_PORTABLE") and 
-    wx.wxStandardPaths.Get():GetUserDataDir() or
-    wx.wxStandardPaths.Get():GetLocalDataDir()
+    return H_DIR and H_DIR or wx.wxStandardPaths.Get():GetLocalDataDir()
   end,
 
   update = function(self,tbl)
@@ -134,7 +132,7 @@ function trayicon:init()
   )
 
   self:Connect(self.menu_quit:GetId(), wx.wxEVT_COMMAND_MENU_SELECTED,
-    function(e) wx.wxGetApp():ExitMainLoop() end
+    function(e) print("he is") wx.wxGetApp():ExitMainLoop() end
   )
 
 end

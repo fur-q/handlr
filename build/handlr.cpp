@@ -50,22 +50,20 @@ bool HandlrApp::OnInit() {
     setlocale(LC_NUMERIC, "C");
 #endif
 
-    // logger
-
-    char * h_debug = getenv("H_DEBUG");
-    char * h_portable = getenv("H_PORTABLE");
     wxString logDir;
 
-    if (h_debug == "0") {
-        if (h_portable == "1")
-            logDir = wxStandardPaths::Get().GetLocalDataDir();
-        else
-            logDir = wxStandardPaths::Get().GetUserDataDir();
-        wxString logPath = logDir + wxFileName::GetPathSeparator() + _T("handlr.log");
-        FILE* logFile = fopen (logPath.mb_str(), "a");
-        wxLogStderr* logger = new wxLogStderr (logFile);
-        wxLog::SetActiveTarget (logger);
-    }
+#ifdef H_PORTABLE
+    logDir = wxStandardPaths::Get().GetLocalDataDir();
+#else
+    logDir = wxStandardPaths::Get().GetUserDataDir();
+#endif
+
+#ifndef H_DEBUG
+    wxString logPath = logDir + wxFileName::GetPathSeparator() + _T("handlr.log");
+    FILE* logFile = fopen (logPath.mb_str(), "a");
+    wxLogStderr* logger = new wxLogStderr (logFile);
+    wxLog::SetActiveTarget (logger);
+#endif
 
     wxInitAllImageHandlers();
 
@@ -76,6 +74,9 @@ bool HandlrApp::OnInit() {
     m_wxlState = wxLuaState(this, wxID_ANY);
     if (!m_wxlState.Ok())
         return false;
+
+    m_wxlState.lua_PushString(logDir.mb_str());
+    m_wxlState.lua_SetGlobal("H_DIR");
 
 #include "handlr.h"
 
@@ -102,6 +103,8 @@ void HandlrApp::OnLuaError(wxLuaEvent &event) {
 }
 
 void HandlrApp::OutputPrint(const wxString& str) {
+#ifndef H_DEBUG
     wxMessageBox(_T("An error occurred - see handlr.log for details."), _T("Error"), wxOK | wxICON_ERROR);
+#endif
     wxLogMessage(str);
 }

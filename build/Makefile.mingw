@@ -1,16 +1,26 @@
+H_DEBUG    ?= 1
+H_PORTABLE ?= 1
+
 CC     = g++
 LUA    = lua
 UPX    = upx
-MV     = move
-CFLAGS = -Os -mthreads -ffunction-sections -fdata-sections
-LFLAGS = -Wl,--subsystem,windows -Wl,--gc-sections
+CFLAGS = -mthreads
+LFLAGS = -Wl,--subsystem,windows 
 DEFS   = HAVE_W32API_H _UNICODE __WXMSW__ wxLUA_USEBINDING_WXADV=1 wxLUA_USEBINDING_WXAUI=0 wxLUA_USEBINDING_WXBASE=1 wxLUA_USEBINDING_WXCORE=1 wxLUA_USEBINDING_WXGL=0 wxLUA_USEBINDING_WXHTML=0 wxLUA_USEBINDING_WXMEDIA=0 wxLUA_USEBINDING_WXNET=0 wxLUA_USEBINDING_WXRICHTEXT=0 wxLUA_USEBINDING_WXSTC=0 wxLUA_USEBINDING_WXXML=0 wxLUA_USEBINDING_WXXRC=0
 LIBDIR = -Llib/wx -Llib/wxlua
 LIBS   = -lwxlua_msw28u_wxbindadv -lwxlua_msw28u_wxbindbase -lwxlua_msw28u_wxbindcore -lwxlua_msw28u_wxlua -llua5.1 -lwxmsw28u_adv -lwxbase28u_net -lwxbase28u_xml -lwxmsw28u_core -lwxbase28u -lwxtiff -lwxjpeg -lwxpng -lwxzlib -lwxregexu -lwxexpat -lkernel32 -luser32 -lgdi32 -lcomdlg32 -lwinspool -lwinmm -lshell32 -lcomctl32 -lole32 -loleaut32 -luuid -lrpcrt4 -ladvapi32 -lwsock32 -lodbc32
 INCDIR = include
 
-H_DEBUG    ?= 1
-H_PORTABLE ?= 1
+ifeq ($(H_DEBUG), 1)
+DEFS += H_DEBUG
+CFLAGS += -O0
+else
+CFLAGS += -O3 -ffunction-sections -fdata-sections
+LFLAGS += -Wl,--gc-sections
+endif
+ifeq ($(H_PORTABLE), 1)
+DEFS += H_PORTABLE
+endif
 
 ifeq ($(H_DEBUG), 1)
 all: handlr.lua handlr.h handlr.o handlr_rc.o handlr.exe
