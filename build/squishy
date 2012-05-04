@@ -1,0 +1,7 @@
+Main "../main.lua"
+Output "handlr.lua"
+Module "frmSettings" "../frmSettings.lua"
+Module "frmUrls" "../frmUrls.lua"
+Module "pl.utils" "../pl/utils.lua"
+Module "pl.lexer" "../pl/lexer.lua"
+Module "pl.pretty" "../pl/pretty.lua"

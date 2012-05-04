@@ -56,8 +56,8 @@ bool HandlrApp::OnInit() {
     char * h_portable = getenv("H_PORTABLE");
     wxString logDir;
 
-    if (h_debug == NULL) {
-        if (h_portable != NULL)
+    if (h_debug == "0") {
+        if (h_portable == "1")
             logDir = wxStandardPaths::Get().GetLocalDataDir();
         else
             logDir = wxStandardPaths::Get().GetUserDataDir();
