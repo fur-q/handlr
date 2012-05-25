@@ -1,7 +1,7 @@
 *.o
 *.o.d
 *.h
-build-renamer.lua
+build/handlr.lua
 build/lib/*
 build/include/*
 gui
