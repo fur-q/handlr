@@ -1,0 +1,40 @@
+H_DEBUG ?= 1
+
+CC      = g++
+LUA     = lua
+WXW_LIB = $(shell wx-config --libs base,core,adv)
+WXL_LIB = $(shell pkg-config --libs-only-L wxlua) -lwxlua_gtk2u_wxbindadv-2.8 -lwxlua_gtk2u_wxbindnet-2.8 -lwxlua_gtk2u_wxbindbase-2.8 -lwxlua_gtk2u_wxbindcore-2.8 -lwxlua_gtk2u_wxlua-2.8 -llua5.1
+WXW_INC = $(shell wx-config --cflags)
+WXL_INC = $(shell pkg-config --cflags-only-I wxlua)
+CFLAGS  = 
+LDFLAGS = 
+DEFS   =  wxLUA_USEBINDING_WXAUI=0 wxLUA_USEBINDING_WXGL=0 wxLUA_USEBINDING_WXHTML=0 wxLUA_USEBINDING_WXMEDIA=0 wxLUA_USEBINDING_WXNET=0 wxLUA_USEBINDING_WXRICHTEXT=0 wxLUA_USEBINDING_WXSTC=0 wxLUA_USEBINDING_WXXML=0 wxLUA_USEBINDING_WXXRC=0
+
+ifeq ($(H_DEBUG), 1)
+DEFS    += H_DEBUG
+CFLAGS  += -O0
+else
+CFLAGS  += -O3 -ffunction-sections -fdata-sections
+LDFLAGS += -Wl,--gc-sections
+endif
+
+all: handlr.lua handlr.h handlr.o handlr
+
+handlr: handlr.h handlr.o
+	$(CC) -s -o handlr handlr.o $(LFLAGS) $(WXW_LIB) $(WXL_LIB)
+
+handlr.h: handlr.lua
+	$(LUA) bin2c.lua handlr.lua > handlr.h	
+
+handlr.o: handlr.cpp
+	$(eval GDEFS = $(foreach i, $(DEFS), -D$(i)))
+	$(CC) -c -o handlr.o $(CFLAGS) $(GDEFS) $(WXW_INC) $(WXL_INC) -MThandlr.o -MFhandlr.o.d -MD -MP handlr.cpp
+
+handlr.lua:
+	$(LUA) squish.lua --no-minify
+
+install:
+	mv handlr /usr/local/bin
+
+clean:
+	rm -rf *.o *.d handlr.h handlr.lua handlr

@@ -22,7 +22,7 @@ function table.uniq(tbl)
 end
 
 function string.split(str, dlm)
-  new = {}
+  local new = {}
   for s in str:gmatch("[^"..dlm.."]+") do table.insert(new,s) end
   return new
 end
@@ -40,6 +40,8 @@ local frmUrls     = require("frmUrls")
 local frmSettings = require("frmSettings")
 local pp          = require("pl.pretty")
 
+IS_WINDOWS = wx.wxPlatformInfo.Get():GetOperatingSystemFamilyName() == "Windows"
+
 -- config
 
 cfg = {
@@ -55,16 +57,14 @@ setmetatable(cfg, {__index = {
 
   file = "",
 
-  dir = function()
-    return H_DIR and H_DIR or wx.wxStandardPaths.Get():GetLocalDataDir()
-  end,
+  dir = H_DIR or wx.wxStandardPaths.Get():GetLocalDataDir(),
 
   update = function(self,tbl)
     for k,v in pairs(tbl) do self[k] = v end
   end,
 
   load = function(self, file)
-    if not file then file = self.dir() .. "/handlr.cfg" end
+    if not file then file = self.dir .. "/handlr.cfg" end
     getmetatable(self).__index.file = file
     local cnf = io.open(file, "r")
     if not cnf then return end
@@ -87,8 +87,13 @@ setmetatable(cfg, {__index = {
 
 local trayicon = wx.wxTaskBarIcon()
 function trayicon:init()
-  -- vv make this platform independent vv
-  self:SetIcon(wx.wxIcon("HANDLR_ICON", wx.wxBITMAP_TYPE_ICO_RESOURCE), "handlr")
+  
+  if IS_WINDOWS then
+    self:SetIcon(wx.wxIcon("HANDLR_ICON", wx.wxBITMAP_TYPE_ICO_RESOURCE), "handlr")
+  else
+    -- get directory
+    self:SetIcon(wx.wxIcon("handlr.png"), wxBITMAP_TYPE_PNG)
+  end
 
   self.menu = wx.wxMenu()
   self.menu_opts  = wx.wxMenuItem(self.menu, wx.wxID_ANY, "Settings")
@@ -132,7 +137,7 @@ function trayicon:init()
   )
 
   self:Connect(self.menu_quit:GetId(), wx.wxEVT_COMMAND_MENU_SELECTED,
-    function(e) print("he is") wx.wxGetApp():ExitMainLoop() end
+    function(e) wx.wxGetApp():ExitMainLoop() end
   )
 
 end

@@ -31,7 +31,12 @@ function frmUrls:Init()
   )
   local lframe = self.frame
   lframe:SetSizeHints( wx.wxDefaultSize, wx.wxDefaultSize )
-  lframe:SetIcon(wx.wxIcon("HANDLR_ICON", wx.wxBITMAP_TYPE_ICO_RESOURCE))
+
+  if IS_WINDOWS then
+    lframe:SetIcon(wx.wxIcon("HANDLR_ICON", wx.wxBITMAP_TYPE_ICO_RESOURCE))
+  else
+    lframe:SetIcon(wx.wxIcon("handlr.png"))
+  end
   
   self.vszUrls = wx.wxBoxSizer( wx.wxVERTICAL )
   
